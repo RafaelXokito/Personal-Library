@@ -1,6 +1,7 @@
 package com.personal_book_library_api.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.personal_book_library_api.demo.dtos.WriterRepository;
@@ -13,6 +14,9 @@ public class WriterService {
     
     private WriterRepository writerRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public WriterService() {
     }
 
@@ -22,9 +26,9 @@ public class WriterService {
     }
 
     @Transactional
-    public Writer save(Writer writer) {
+    public void save(Writer writer) {
+        writer.setPassword(passwordEncoder.encode(writer.getPassword()));
         writerRepository.save(writer);
         System.out.println(writer.toString());
-        return writer;
     }
 }

@@ -2,20 +2,16 @@ package com.personal_book_library_api.demo.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Writer extends User {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    private Long idCard;
+    private String idCard;
 
     @OneToMany(mappedBy = "writer")
     private List<Book> books;
@@ -28,7 +24,12 @@ public class Writer extends User {
         this.books = new ArrayList<>();
     }
 
-    public Long getIdCard() {
+    @PrePersist
+    private void prePersist() {
+        this.idCard = "W-" + UUID.randomUUID().toString();
+    }
+
+    public String getIdCard() {
         return idCard;
     }
 

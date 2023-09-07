@@ -2,6 +2,7 @@ package com.personal_book_library_api.demo.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -38,7 +39,7 @@ public class Reader extends User {
 
     @PrePersist
     private void prePersist() {
-        this.idCard = "W-" + this.getId();
+        this.idCard = "W-" + UUID.randomUUID().toString();
     }
 
     public String getIdCard() {
