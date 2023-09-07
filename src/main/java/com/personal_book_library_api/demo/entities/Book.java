@@ -1,15 +1,10 @@
 package com.personal_book_library_api.demo.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -27,6 +22,7 @@ public class Book {
 
     @NotNull
     @Lob
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @OneToMany(mappedBy = "currentBook")
@@ -47,6 +43,9 @@ public class Book {
         this.description = description;
         this.content = content;
         this.writer = writer;
+
+        this.readers = new ArrayList<>();
+        this.currentReaders = new ArrayList<>();
     }
 
     public Long getId() {
@@ -89,6 +88,10 @@ public class Book {
         this.readers = readers;
     }
 
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
     public Writer getWriter() {
         return writer;
     }
@@ -107,5 +110,18 @@ public class Book {
 
     public void removeCurrentReader(Reader reader) {
         this.currentReaders.remove(reader);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", content='" + content + '\'' +
+                ", currentReaders=" + currentReaders +
+                ", readers=" + readers +
+                ", writer=" + writer +
+                '}';
     }
 }

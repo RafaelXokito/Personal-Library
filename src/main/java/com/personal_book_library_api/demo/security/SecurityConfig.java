@@ -46,6 +46,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(configurer ->
                 configurer // hasAuthority("WRITER")
                         .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/books").hasAuthority("WRITER")
                         .requestMatchers(HttpMethod.POST, "/api/writers").permitAll()
                         .anyRequest().permitAll()
                 );
