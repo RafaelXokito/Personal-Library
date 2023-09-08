@@ -1,5 +1,6 @@
 package com.personal_book_library_api.demo.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -43,7 +50,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer ->
+        http
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(configurer ->
                 configurer // hasAuthority("WRITER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/add").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/read").hasAuthority("READER")
@@ -54,12 +63,22 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/books").hasAuthority("WRITER")
                         .anyRequest().permitAll()
                 );
-
         http.httpBasic(Customizer.withDefaults());
 
         http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
