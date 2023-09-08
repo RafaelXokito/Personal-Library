@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.personal_book_library_api.demo.rest.BookRestController.getReaderDTO;
+
 @RestController
 @RequestMapping("/api")
 public class ReaderRestController {
@@ -31,15 +33,6 @@ public class ReaderRestController {
     }
 
     public ReaderDTO convertToDTOSimple(Reader reader) {
-        ReaderDTO readerDTO = new ReaderDTO();
-        readerDTO.setId(reader.getId());
-        readerDTO.setIdCard(reader.getIdCard());
-        readerDTO.setFontSize(reader.getFontSize());
-        readerDTO.setFirstName(reader.getFirstName());
-        readerDTO.setLastName(reader.getLastName());
-        readerDTO.setActive(reader.isActive());
-        readerDTO.setEmail(reader.getEmail());
-
-        return readerDTO;
+        return getReaderDTO(reader);
     }
 }

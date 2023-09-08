@@ -190,6 +190,10 @@ public class BookRestController {
     }
 
     public ReaderDTO convertReaderToDTOSimple(Reader reader) {
+        return getReaderDTO(reader);
+    }
+
+    static ReaderDTO getReaderDTO(Reader reader) {
         ReaderDTO readerDTO = new ReaderDTO();
         readerDTO.setId(reader.getId());
         readerDTO.setIdCard(reader.getIdCard());
@@ -203,6 +207,10 @@ public class BookRestController {
     }
 
     public WriterDTO convertWriterToDTOSimple(Writer writer) {
+        return getWriterDTO(writer);
+    }
+
+    static WriterDTO getWriterDTO(Writer writer) {
         WriterDTO writerDTO = new WriterDTO();
         writerDTO.setId(writer.getId());
         writerDTO.setIdCard(writer.getIdCard());
