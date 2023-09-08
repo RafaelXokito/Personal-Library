@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/books/*/remove").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/nextpage").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/previouspage").hasAuthority("READER")
+                        .requestMatchers(HttpMethod.GET, "/api/books/*/currentreaders").hasAuthority("WRITER")
                         .requestMatchers(HttpMethod.POST, "/api/books").hasAuthority("WRITER")
                         .anyRequest().permitAll()
                 );

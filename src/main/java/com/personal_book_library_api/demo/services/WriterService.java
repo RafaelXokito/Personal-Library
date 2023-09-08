@@ -31,4 +31,8 @@ public class WriterService {
         writerRepository.save(writer);
         System.out.println(writer.toString());
     }
+
+    public Writer getWriter(String username) {
+        return writerRepository.findByEmail(username).orElseThrow();
+    }
 }

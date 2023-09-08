@@ -187,4 +187,25 @@ public class BookService {
 
         return getPageDTO(readerBook, reader, book);
     }
+
+    public List<Book> search(String title, String keyword, String writerName) {
+        return bookRepository.search(title, keyword, writerName);
+    }
+
+    public List<Reader> getReaders(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        List<ReaderBook> readerBooks = readerBookRepository.findByBook_Id(id);
+        return readerBooks.stream().map(ReaderBook::getReader).toList();
+    }
+
+    public List<Reader> getCurrentReaders(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        return book.getCurrentReaders();
+    }
+
+    public Writer getWriter(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        return book.getWriter();
+    }
+
 }

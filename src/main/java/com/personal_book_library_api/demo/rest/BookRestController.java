@@ -6,13 +6,10 @@ import com.personal_book_library_api.demo.entities.Book;
 import com.personal_book_library_api.demo.entities.Reader;
 import com.personal_book_library_api.demo.entities.ReaderBook;
 import com.personal_book_library_api.demo.entities.Writer;
-import org.apache.tomcat.util.http.parser.Authorization;
+import com.personal_book_library_api.demo.services.WriterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,32 +23,40 @@ import java.util.stream.Collectors;
 public class BookRestController {
     
     private BookService bookService;
+    private WriterService writerService;
 
     public BookRestController() {
     }
 
     @Autowired
-    public BookRestController(BookService bookService) {
+    public BookRestController(BookService bookService, WriterService writerService) {
         this.bookService = bookService;
+        this.writerService = writerService;
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<BookDTO>> findAll() {
+    public ResponseEntity<List<BookSimpleDTO>> findAll() {
         List<Book> books = bookService.findAll();
         return ResponseEntity.ok(convertToDTOList(books));
     }
 
+    @GetMapping("/books/search")
+    public ResponseEntity<List<BookSimpleDTO>> search(@RequestParam(required = false, defaultValue = "") String title, @RequestParam(required = false, defaultValue = "") String keyword, @RequestParam(required = false, defaultValue = "") String writerName) {
+        List<Book> books = bookService.search(title, keyword, writerName);
+        return ResponseEntity.ok(convertToDTOList(books));
+    }
+
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookDTO> find(@PathVariable Long id) {
+    public ResponseEntity<BookSingleDTO> find(@PathVariable Long id) {
         Book book = bookService.findById(id);
-        return ResponseEntity.ok(convertToDTO(book));
+        return ResponseEntity.ok(convertBookToDTOSingle(book));
     }
 
     @PostMapping("/books")
     public ResponseEntity<BookDTO> save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Book book) {
         // userDetails.getUsername() It returns the email from the authenticated user
         bookService.save(book, userDetails.getUsername());
-        BookDTO bookDTO = convertToDTO(book);
+        BookDTO bookDTO = convertBookToDTO(book);
         return ResponseEntity.ok(bookDTO);
     }
 
@@ -62,9 +67,9 @@ public class BookRestController {
     }
 
     @DeleteMapping("/books/{id}/remove")
-    public ResponseEntity<ReaderBookDTO> removeBook(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
+    public ResponseEntity<TypeResolutionContext.Empty> removeBook(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
         ReaderBook readerBook = bookService.removeBook(userDetails.getUsername(), id);
-        return ResponseEntity.ok(convertReaderBookToDTOSimple(readerBook));
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/books/{bookId}/read")
@@ -85,30 +90,77 @@ public class BookRestController {
         return ResponseEntity.ok(pageDTO);
     }
 
-    public ReaderBookDTO convertReaderBookToReaderDTO(ReaderBook readerBook) {
-        ReaderBookDTO readerBookDTO = new ReaderBookDTO();
-        readerBookDTO.setId(readerBook.getId());
-        readerBookDTO.setBook(convertToDTO(readerBook.getBook()));
-        readerBookDTO.setReader(convertToDTOSimple(readerBook.getReader()));
-        readerBookDTO.setCurrentPage(readerBook.getCurrentPage());
-        return readerBookDTO;
+    @GetMapping("/books/{id}/readers")
+    public ResponseEntity<List<ReaderDTO>> getReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+        Writer writer = writerService.getWriter(userDetails.getUsername());
+        Book book = bookService.findById(id);
+        if (!book.getWriter().equals(writer)) {
+            throw new RuntimeException("You are not the writer of this book");
+        }
+        List<Reader> readers = bookService.getReaders(id);
+        return ResponseEntity.ok(readers.stream()
+                .map(this::convertReaderToDTOSimple)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/books/{id}/currentreaders")
+    public ResponseEntity<List<ReaderDTO>> getCurrentReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+        Writer writer = writerService.getWriter(userDetails.getUsername());
+        Book book = bookService.findById(id);
+        if (!book.getWriter().equals(writer)) {
+            throw new RuntimeException("You are not the writer of this book");
+        }
+        List<Reader> readers = bookService.getCurrentReaders(id);
+        return ResponseEntity.ok(readers.stream()
+                .map(this::convertReaderToDTOSimple)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/books/{id}/writer")
+    public ResponseEntity<WriterDTO> getWriter(@PathVariable Long id) {
+        Writer writer = bookService.getWriter(id);
+        return ResponseEntity.ok(convertWriterToDTOSimple(writer));
     }
 
     public ReaderBookDTO convertReaderBookToDTOSimple(ReaderBook readerBook) {
         ReaderBookDTO readerBookDTO = new ReaderBookDTO();
         readerBookDTO.setId(readerBook.getId());
-        readerBookDTO.setBook(convertToDTO(readerBook.getBook()));
+        readerBookDTO.setBook(convertBookToDTOSimple(readerBook.getBook()));
         readerBookDTO.setCurrentPage(readerBook.getCurrentPage());
         return readerBookDTO;
     }
 
-    public List<BookDTO> convertToDTOList(List<Book> books) {
+    public List<BookSimpleDTO> convertToDTOList(List<Book> books) {
         return books.stream()
-                .map(this::convertToDTO)
+                .map(this::convertBookToDTOSimple)
                 .collect(Collectors.toList());
     }
 
-    public BookDTO convertToDTO(Book book) {
+    public BookSimpleDTO convertBookToDTOSimple(Book book) {
+        BookSimpleDTO bookDTO = new BookSimpleDTO();
+        bookDTO.setId(book.getId());
+        bookDTO.setTitle(book.getTitle());
+        bookDTO.setDescription(book.getDescription());
+
+        return bookDTO;
+    }
+
+    public BookSingleDTO convertBookToDTOSingle(Book book) {
+        BookSingleDTO bookDTO = new BookSingleDTO();
+        bookDTO.setId(book.getId());
+        bookDTO.setTitle(book.getTitle());
+        bookDTO.setDescription(book.getDescription());
+        bookDTO.setContent(book.getContent());
+
+        // Convert the Writer entity to WriterDTO
+        if (book.getWriter() != null) {
+            bookDTO.setWriter(convertWriterToDTOSimple(book.getWriter()));  // Assuming you have a convertToDTO method for Writer
+        }
+
+        return bookDTO;
+    }
+
+    public BookDTO convertBookToDTO(Book book) {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(book.getId());
         bookDTO.setTitle(book.getTitle());
@@ -118,26 +170,26 @@ public class BookRestController {
         // Convert the list of Reader entities to ReaderDTOs for currentReaders
         if (book.getCurrentReaders() != null) {
             bookDTO.setCurrentReaders(book.getCurrentReaders().stream()
-                    .map(this::convertToDTOSimple)  // Assuming you have a convertToDTO method for Reader
+                    .map(this::convertReaderToDTOSimple)  // Assuming you have a convertToDTO method for Reader
                     .collect(Collectors.toList()));
         }
 
         // Convert the list of Reader entities to ReaderDTOs for readers
         if (book.getReaders() != null) {
             bookDTO.setReaders(book.getReaders().stream()
-                    .map(readerBook -> convertToDTOSimple(readerBook.getReader()))
+                    .map(readerBook -> convertReaderToDTOSimple(readerBook.getReader()))
                     .collect(Collectors.toList()));
         }
 
         // Convert the Writer entity to WriterDTO
         if (book.getWriter() != null) {
-            bookDTO.setWriter(convertToDTOSimple(book.getWriter()));  // Assuming you have a convertToDTO method for Writer
+            bookDTO.setWriter(convertWriterToDTOSimple(book.getWriter()));  // Assuming you have a convertToDTO method for Writer
         }
 
         return bookDTO;
     }
 
-    public ReaderDTO convertToDTOSimple(Reader reader) {
+    public ReaderDTO convertReaderToDTOSimple(Reader reader) {
         ReaderDTO readerDTO = new ReaderDTO();
         readerDTO.setId(reader.getId());
         readerDTO.setIdCard(reader.getIdCard());
@@ -150,7 +202,7 @@ public class BookRestController {
         return readerDTO;
     }
 
-    public WriterDTO convertToDTOSimple(Writer writer) {
+    public WriterDTO convertWriterToDTOSimple(Writer writer) {
         WriterDTO writerDTO = new WriterDTO();
         writerDTO.setId(writer.getId());
         writerDTO.setIdCard(writer.getIdCard());

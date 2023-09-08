@@ -3,20 +3,20 @@ package com.personal_book_library_api.demo.dtos;
 public class ReaderBookDTO {
     private Long id;
     private ReaderDTO reader;
-    private BookDTO book;
+    private BookSimpleDTO book;
     private int currentPage;
 
     public ReaderBookDTO() {
     }
 
-    public ReaderBookDTO(Long id, ReaderDTO reader, BookDTO book, int currentPage) {
+    public ReaderBookDTO(Long id, ReaderDTO reader, BookSimpleDTO book, int currentPage) {
         this.id = id;
         this.reader = reader;
         this.book = book;
         this.currentPage = currentPage;
     }
 
-    public ReaderBookDTO(ReaderDTO reader, BookDTO book, int currentPage) {
+    public ReaderBookDTO(ReaderDTO reader, BookSimpleDTO book, int currentPage) {
         this.reader = reader;
         this.book = book;
         this.currentPage = currentPage;
@@ -38,11 +38,11 @@ public class ReaderBookDTO {
         this.reader = reader;
     }
 
-    public BookDTO getBook() {
+    public BookSimpleDTO getBook() {
         return book;
     }
 
-    public void setBook(BookDTO book) {
+    public void setBook(BookSimpleDTO book) {
         this.book = book;
     }
 
