@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.personal_book_library_api.demo.dtos.WriterRepository;
+import com.personal_book_library_api.demo.daos.WriterRepository;
 import com.personal_book_library_api.demo.entities.Writer;
 
 import jakarta.transaction.Transactional;

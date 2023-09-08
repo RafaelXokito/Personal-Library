@@ -1,7 +1,6 @@
 package com.personal_book_library_api.demo.services;
 
-import com.personal_book_library_api.demo.dtos.ReaderRepository;
-import com.personal_book_library_api.demo.entities.Reader;
+import com.personal_book_library_api.demo.daos.ReaderRepository;
 import com.personal_book_library_api.demo.entities.Reader;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

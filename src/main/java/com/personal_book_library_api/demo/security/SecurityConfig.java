@@ -45,9 +45,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                 configurer // hasAuthority("WRITER")
-                        .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/books/*/add").hasAuthority("READER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/books/*/read").hasAuthority("READER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/books/*/remove").hasAuthority("READER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/books/nextpage").hasAuthority("READER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/books/previouspage").hasAuthority("READER")
                         .requestMatchers(HttpMethod.POST, "/api/books").hasAuthority("WRITER")
-                        .requestMatchers(HttpMethod.POST, "/api/writers").permitAll()
                         .anyRequest().permitAll()
                 );
 

@@ -27,5 +27,4 @@ public class ReaderRestController {
         readerService.save(reader);
         return reader;
     }
-    
 }

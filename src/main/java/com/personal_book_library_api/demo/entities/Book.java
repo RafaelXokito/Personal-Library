@@ -28,8 +28,8 @@ public class Book {
     @OneToMany(mappedBy = "currentBook")
     private List<Reader> currentReaders;
 
-    @ManyToMany
-    private List<Reader> readers;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<ReaderBook> readers = new ArrayList<>();
 
     @NotNull
     @ManyToOne
@@ -80,12 +80,16 @@ public class Book {
         return currentReaders;
     }
 
-    public List<Reader> getReaders() {
+    public List<ReaderBook> getReaders() {
         return readers;
     }
 
-    public void setReaders(List<Reader> readers) {
-        this.readers = readers;
+    public void addReaderBook(ReaderBook readerBook) {
+        this.readers.add(readerBook);
+    }
+
+    public void setCurrentReaders(List<Reader> currentReaders) {
+        this.currentReaders = currentReaders;
     }
 
     public void setWriter(Writer writer) {
@@ -94,10 +98,6 @@ public class Book {
 
     public Writer getWriter() {
         return writer;
-    }
-
-    public void addReader(Reader reader) {
-        this.readers.add(reader);
     }
 
     public void removeReader(Reader reader) {

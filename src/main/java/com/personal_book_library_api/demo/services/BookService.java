@@ -2,13 +2,18 @@ package com.personal_book_library_api.demo.services;
 
 import java.util.List;
 
-import com.personal_book_library_api.demo.dtos.WriterRepository;
+import com.personal_book_library_api.demo.daos.ReaderBookRepository;
+import com.personal_book_library_api.demo.daos.ReaderRepository;
+import com.personal_book_library_api.demo.daos.WriterRepository;
+import com.personal_book_library_api.demo.dtos.PageDTO;
+import com.personal_book_library_api.demo.entities.Reader;
+import com.personal_book_library_api.demo.entities.ReaderBook;
 import com.personal_book_library_api.demo.entities.Writer;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.personal_book_library_api.demo.dtos.BookRepository;
+import com.personal_book_library_api.demo.daos.BookRepository;
 import com.personal_book_library_api.demo.entities.Book;
 
 @Service
@@ -16,14 +21,17 @@ public class BookService {
     
     private BookRepository bookRepository;
     private WriterRepository writerRepository;
-
+    private ReaderRepository readerRepository;
+    private ReaderBookRepository readerBookRepository;
     public BookService() {
     }
 
     @Autowired
-    public BookService(BookRepository bookRepository, WriterRepository writerRepository) {
+    public BookService(BookRepository bookRepository, WriterRepository writerRepository, ReaderRepository readerRepository, ReaderBookRepository readerBookRepository) {
         this.bookRepository = bookRepository;
         this.writerRepository = writerRepository;
+        this.readerRepository = readerRepository;
+        this.readerBookRepository = readerBookRepository;
     }
 
     public List<Book> findAll() {
@@ -33,12 +41,150 @@ public class BookService {
     @Transactional
     public void save(Book book, String email) {
         Writer writer = writerRepository.findByEmail(email).orElse(null);
-        System.out.println(writer);
+
         book.setWriter(writer);
         bookRepository.save(book);
     }
 
     public Book findById(Long id) {
         return bookRepository.findById(id).orElseThrow();
+    }
+
+    public ReaderBook addBook(String email, Long id) {
+        Reader reader = readerRepository.findByEmail(email).orElseThrow();
+
+        Book book = bookRepository.findById(id).orElseThrow();
+
+        if (readerBookRepository.findByReaderAndBook(reader, book).isPresent()) {
+            throw new RuntimeException("You already have this book");
+        }
+
+        ReaderBook readerBook = new ReaderBook(reader, book, 1);
+        readerBookRepository.save(readerBook);
+
+        return readerBook;
+    }
+
+    public ReaderBook removeBook(String username, Long id) {
+        Reader reader = readerRepository.findByEmail(username).orElseThrow();
+
+        Book book = bookRepository.findById(id).orElseThrow();
+
+        ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
+
+        readerBookRepository.delete(readerBook);
+
+        if (reader.getCurrentBook() != null && reader.getCurrentBook().getId().equals(id)) {
+            reader.getCurrentBook().removeCurrentReader(reader);
+            reader.setCurrentBook(null);
+        }
+
+        reader.removeBook(book);
+        book.removeReader(reader);
+        readerRepository.save(reader);
+        bookRepository.save(book);
+
+        return readerBook;
+    }
+
+    public PageDTO readBook(String username, Long bookId) {
+        Reader reader = readerRepository.findByEmail(username).orElseThrow();
+
+        Book book = bookRepository.findById(bookId).orElseThrow();
+
+        if (readerBookRepository.findByReaderAndBook(reader, book).isEmpty()) {
+            throw new RuntimeException("You don't have this book");
+        }
+
+        Book currentBook = reader.getCurrentBook();
+        if (currentBook != null) {
+            currentBook.removeCurrentReader(reader);
+        }
+
+        if (currentBook != null && !currentBook.getId().equals(bookId)) {
+            reader.setCurrentBook(book);
+            book.addCurrentReader(reader);
+            readerRepository.save(reader);
+            bookRepository.save(book);
+        }
+
+        ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
+
+        return getPageDTO(readerBook, reader, book);
+    }
+
+    private static PageDTO getPageDTO(ReaderBook readerBook, Reader reader, Book book) {
+        int currentPage = readerBook.getCurrentPage();
+
+        // Assuming a default font size fits 1000 characters per page
+        int charsPerPageDefault = 1000;
+
+        // Calculate the ratio of the reader's font size to the default font size
+        double fontSizeRatio = (double) reader.getFontSize() / 12.0;
+
+        // Adjust based on reader's preferred font size
+        int charsPerPageAdjusted = (int) (charsPerPageDefault / fontSizeRatio);
+
+        int start = (currentPage - 1) * charsPerPageAdjusted;
+        int end = start + charsPerPageAdjusted;
+
+        // Adjust the 'start' position to the next newline character
+        if (start > 0) {
+            int prevNewlinePosStart = book.getContent().lastIndexOf("\n", start);
+            if (prevNewlinePosStart != -1) {
+                start = prevNewlinePosStart + 1; // +1 to move past the newline character
+            }
+        }
+
+        // Ensure we don't exceed the book's content length
+        if (end > book.getContent().length()) {
+            end = book.getContent().length();
+        } else {
+            // Find the previous newline character after the 'end' position
+            int prevNewlinePos = book.getContent().lastIndexOf("\n", end);
+            if (prevNewlinePos != -1 && prevNewlinePos > start) {
+                end = prevNewlinePos; // Adjust the 'end' position to the previous newline character
+            }
+        }
+
+        return new PageDTO(currentPage, charsPerPageAdjusted, book.getContent().substring(start, end));
+    }
+
+    public PageDTO nextPage(String username) {
+        Reader reader = readerRepository.findByEmail(username).orElseThrow();
+
+        Book book = reader.getCurrentBook();
+        if (book == null) {
+            throw new RuntimeException("You don't have a current book");
+        }
+
+        ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
+        
+        int currentPage = readerBook.getCurrentPage();
+        int nextPage = currentPage + 1;
+        readerBook.setCurrentPage(nextPage);
+        readerBookRepository.save(readerBook);
+        
+        return getPageDTO(readerBook, reader, book);
+    }
+
+    public PageDTO previousPage(String username) {
+        Reader reader = readerRepository.findByEmail(username).orElseThrow();
+
+        Book book = reader.getCurrentBook();
+        if (book == null) {
+            throw new RuntimeException("You don't have a current book");
+        }
+
+        ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
+
+        int currentPage = readerBook.getCurrentPage();
+        if (currentPage > 1) {
+            currentPage--;
+        }
+        readerBook.setCurrentPage(currentPage);
+        readerBookRepository.save(readerBook);
+
+        return getPageDTO(readerBook, reader, book);
     }
 }

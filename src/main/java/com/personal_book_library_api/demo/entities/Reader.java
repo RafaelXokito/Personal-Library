@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -19,14 +15,13 @@ public class Reader extends User {
     @Column(nullable = false, unique = true)
     private String idCard;
 
-    @Value("${default-font-size:12}")
-    private int fontSize;
+    private int fontSize = 12;
 
     @ManyToOne
     private Book currentBook;
 
-    @ManyToMany
-    private List<Book> books;
+    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
+    private List<ReaderBook> books = new ArrayList<>();
 
     public Reader() {
     }
@@ -62,11 +57,11 @@ public class Reader extends User {
         this.currentBook = currentBook;
     }
 
-    public List<Book> getBooks() {
+    public List<ReaderBook> getBooks() {
         return books;
     }
 
-    public void addBook(Book book) {
+    public void addReaderBook(ReaderBook book) {
         this.books.add(book);
     }
 
