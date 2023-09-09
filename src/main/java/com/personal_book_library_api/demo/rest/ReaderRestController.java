@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.personal_book_library_api.demo.rest.BookRestController.getReaderDTO;
-
 @RestController
 @NoArgsConstructor
 @RequestMapping("/api")
@@ -26,12 +24,9 @@ public class ReaderRestController {
     }
 
     @PostMapping("/readers")
+    @Deprecated
     public ResponseEntity<ReaderDTO> save(@RequestBody Reader reader) {
         readerService.save(reader);
-        return ResponseEntity.ok(convertToDTOSimple(reader));
-    }
-
-    public ReaderDTO convertToDTOSimple(Reader reader) {
-        return getReaderDTO(reader);
+        return ResponseEntity.ok(ReaderDTO.from(reader));
     }
 }

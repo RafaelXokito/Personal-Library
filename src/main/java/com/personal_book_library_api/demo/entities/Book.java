@@ -6,7 +6,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 public class Book {
     
@@ -35,9 +41,6 @@ public class Book {
     @ManyToOne
     private Writer writer;
 
-    public Book() {
-    }
-
     public Book(@NotNull String title, @NotNull String description, @NotNull String content, @NotNull Writer writer) {
         this.title = title;
         this.description = description;
@@ -48,56 +51,12 @@ public class Book {
         this.currentReaders = new ArrayList<>();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public List<Reader> getCurrentReaders() {
-        return currentReaders;
-    }
-
-    public List<ReaderBook> getReaders() {
-        return readers;
-    }
-
     public void addReaderBook(ReaderBook readerBook) {
         this.readers.add(readerBook);
     }
 
-    public void setCurrentReaders(List<Reader> currentReaders) {
-        this.currentReaders = currentReaders;
-    }
-
-    public void setWriter(Writer writer) {
-        this.writer = writer;
-    }
-
-    public Writer getWriter() {
-        return writer;
+    public void removeReaderBook(ReaderBook readerBook) {
+        this.readers.remove(readerBook);
     }
 
     public void removeReader(Reader reader) {

@@ -3,7 +3,6 @@ package com.personal_book_library_api.demo.rest;
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import com.personal_book_library_api.demo.dtos.*;
 import com.personal_book_library_api.demo.entities.Book;
-import com.personal_book_library_api.demo.entities.Reader;
 import com.personal_book_library_api.demo.entities.ReaderBook;
 import com.personal_book_library_api.demo.entities.Writer;
 import com.personal_book_library_api.demo.services.WriterService;
@@ -37,33 +36,32 @@ public class BookRestController {
     @GetMapping("/books")
     public ResponseEntity<List<BookSimpleDTO>> findAll() {
         List<Book> books = bookService.findAll();
-        return ResponseEntity.ok(convertToDTOList(books));
+        return ResponseEntity.ok(BookSimpleDTO.from(books));
     }
 
     @GetMapping("/books/search")
     public ResponseEntity<List<BookSimpleDTO>> search(@RequestParam(required = false, defaultValue = "") String title, @RequestParam(required = false, defaultValue = "") String keyword, @RequestParam(required = false, defaultValue = "") String writerName) {
         List<Book> books = bookService.search(title, keyword, writerName);
-        return ResponseEntity.ok(convertToDTOList(books));
+        return ResponseEntity.ok(BookSimpleDTO.from(books));
     }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<BookSingleDTO> find(@PathVariable Long id) {
         Book book = bookService.findById(id);
-        return ResponseEntity.ok(convertBookToDTOSingle(book));
+        return ResponseEntity.ok(BookSingleDTO.from(book));
     }
 
     @PostMapping("/books")
     public ResponseEntity<BookDTO> save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Book book) {
         // userDetails.getUsername() It returns the email from the authenticated user
         bookService.save(book, userDetails.getUsername());
-        BookDTO bookDTO = convertBookToDTO(book);
-        return ResponseEntity.ok(bookDTO);
+        return ResponseEntity.ok(BookDTO.from(book));
     }
 
     @PatchMapping("/books/{id}/add")
     public ResponseEntity<ReaderBookDTO> addBook(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
         ReaderBook readerBook = bookService.addBook(userDetails.getUsername(), id);
-        return ResponseEntity.ok(convertReaderBookToDTOSimple(readerBook));
+        return ResponseEntity.ok(ReaderBookDTO.from(readerBook));
     }
 
     @DeleteMapping("/books/{id}/remove")
@@ -91,137 +89,28 @@ public class BookRestController {
     }
 
     @GetMapping("/books/{id}/readers")
-    public ResponseEntity<List<ReaderDTO>> getReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+    public ResponseEntity<List<ReaderSimpleDTO>> getReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
         Writer writer = writerService.getWriter(userDetails.getUsername());
         Book book = bookService.findById(id);
         if (!book.getWriter().equals(writer)) {
             throw new RuntimeException("You are not the writer of this book");
         }
-        List<Reader> readers = bookService.getReaders(id);
-        return ResponseEntity.ok(readers.stream()
-                .map(this::convertReaderToDTOSimple)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(ReaderSimpleDTO.fromReaderBooks(book.getReaders()));
     }
 
     @GetMapping("/books/{id}/currentreaders")
-    public ResponseEntity<List<ReaderDTO>> getCurrentReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+    public ResponseEntity<List<ReaderSimpleDTO>> getCurrentReaders(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
         Writer writer = writerService.getWriter(userDetails.getUsername());
         Book book = bookService.findById(id);
         if (!book.getWriter().equals(writer)) {
             throw new RuntimeException("You are not the writer of this book");
         }
-        List<Reader> readers = bookService.getCurrentReaders(id);
-        return ResponseEntity.ok(readers.stream()
-                .map(this::convertReaderToDTOSimple)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(ReaderSimpleDTO.from(book.getCurrentReaders()));
     }
 
     @GetMapping("/books/{id}/writer")
-    public ResponseEntity<WriterDTO> getWriter(@PathVariable Long id) {
+    public ResponseEntity<WriterSimpleDTO> getWriter(@PathVariable Long id) {
         Writer writer = bookService.getWriter(id);
-        return ResponseEntity.ok(convertWriterToDTOSimple(writer));
+        return ResponseEntity.ok(WriterSimpleDTO.from(writer));
     }
-
-    public ReaderBookDTO convertReaderBookToDTOSimple(ReaderBook readerBook) {
-        ReaderBookDTO readerBookDTO = new ReaderBookDTO();
-        readerBookDTO.setId(readerBook.getId());
-        readerBookDTO.setBook(convertBookToDTOSimple(readerBook.getBook()));
-        readerBookDTO.setCurrentPage(readerBook.getCurrentPage());
-        return readerBookDTO;
-    }
-
-    public List<BookSimpleDTO> convertToDTOList(List<Book> books) {
-        return books.stream()
-                .map(this::convertBookToDTOSimple)
-                .collect(Collectors.toList());
-    }
-
-    public BookSimpleDTO convertBookToDTOSimple(Book book) {
-        BookSimpleDTO bookDTO = new BookSimpleDTO();
-        bookDTO.setId(book.getId());
-        bookDTO.setTitle(book.getTitle());
-        bookDTO.setDescription(book.getDescription());
-        bookDTO.setWriterName(book.getWriter().getFirstName() + " " + book.getWriter().getLastName());
-
-        return bookDTO;
-    }
-
-    public BookSingleDTO convertBookToDTOSingle(Book book) {
-        BookSingleDTO bookDTO = new BookSingleDTO();
-        bookDTO.setId(book.getId());
-        bookDTO.setTitle(book.getTitle());
-        bookDTO.setDescription(book.getDescription());
-        bookDTO.setContent(book.getContent());
-
-        // Convert the Writer entity to WriterDTO
-        if (book.getWriter() != null) {
-            bookDTO.setWriter(convertWriterToDTOSimple(book.getWriter()));  // Assuming you have a convertToDTO method for Writer
-        }
-
-        return bookDTO;
-    }
-
-    public BookDTO convertBookToDTO(Book book) {
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setId(book.getId());
-        bookDTO.setTitle(book.getTitle());
-        bookDTO.setDescription(book.getDescription());
-        bookDTO.setContent(book.getContent());
-
-        // Convert the list of Reader entities to ReaderDTOs for currentReaders
-        if (book.getCurrentReaders() != null) {
-            bookDTO.setCurrentReaders(book.getCurrentReaders().stream()
-                    .map(this::convertReaderToDTOSimple)  // Assuming you have a convertToDTO method for Reader
-                    .collect(Collectors.toList()));
-        }
-
-        // Convert the list of Reader entities to ReaderDTOs for readers
-        if (book.getReaders() != null) {
-            bookDTO.setReaders(book.getReaders().stream()
-                    .map(readerBook -> convertReaderToDTOSimple(readerBook.getReader()))
-                    .collect(Collectors.toList()));
-        }
-
-        // Convert the Writer entity to WriterDTO
-        if (book.getWriter() != null) {
-            bookDTO.setWriter(convertWriterToDTOSimple(book.getWriter()));  // Assuming you have a convertToDTO method for Writer
-        }
-
-        return bookDTO;
-    }
-
-    public ReaderDTO convertReaderToDTOSimple(Reader reader) {
-        return getReaderDTO(reader);
-    }
-
-    static ReaderDTO getReaderDTO(Reader reader) {
-        ReaderDTO readerDTO = new ReaderDTO();
-        readerDTO.setId(reader.getId());
-        readerDTO.setIdCard(reader.getIdCard());
-        readerDTO.setFontSize(reader.getFontSize());
-        readerDTO.setFirstName(reader.getFirstName());
-        readerDTO.setLastName(reader.getLastName());
-        readerDTO.setActive(reader.isActive());
-        readerDTO.setEmail(reader.getEmail());
-
-        return readerDTO;
-    }
-
-    public WriterDTO convertWriterToDTOSimple(Writer writer) {
-        return getWriterDTO(writer);
-    }
-
-    static WriterDTO getWriterDTO(Writer writer) {
-        WriterDTO writerDTO = new WriterDTO();
-        writerDTO.setId(writer.getId());
-        writerDTO.setIdCard(writer.getIdCard());
-        writerDTO.setFirstName(writer.getFirstName());
-        writerDTO.setLastName(writer.getLastName());
-        writerDTO.setActive(writer.isActive());
-        writerDTO.setEmail(writer.getEmail());
-
-        return writerDTO;
-    }
-
-
 }

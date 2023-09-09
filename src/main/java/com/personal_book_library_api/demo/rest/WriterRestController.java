@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.personal_book_library_api.demo.entities.Writer;
 import com.personal_book_library_api.demo.services.WriterService;
 
-import static com.personal_book_library_api.demo.rest.BookRestController.getWriterDTO;
-
 @RestController
 @RequestMapping("/api")
 public class WriterRestController {
@@ -28,13 +26,10 @@ public class WriterRestController {
     }
 
     @PostMapping("/writers")
+    @Deprecated
     public ResponseEntity<WriterDTO> save(@RequestBody Writer writer) {
         writerService.save(writer);
-        return ResponseEntity.ok(convertToDTOSimple(writer));
-    }
-
-    public WriterDTO convertToDTOSimple(Writer writer) {
-        return getWriterDTO(writer);
+        return ResponseEntity.ok(WriterDTO.from(writer));
     }
     
 }

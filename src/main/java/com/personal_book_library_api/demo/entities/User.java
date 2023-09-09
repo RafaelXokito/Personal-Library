@@ -49,6 +49,8 @@ public abstract class User implements UserDetails {
         this.password = password;
     }
 
+    public abstract String getIdCard();
+
     @Override
     public String getUsername() {
         return email;

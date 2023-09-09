@@ -63,6 +63,11 @@ public class BookService {
         ReaderBook readerBook = new ReaderBook(reader, book, 1);
         readerBookRepository.save(readerBook);
 
+        book.addReaderBook(readerBook);
+        reader.addReaderBook(readerBook);
+        bookRepository.save(book);
+        readerRepository.save(reader);
+
         return readerBook;
     }
 
@@ -72,6 +77,9 @@ public class BookService {
         Book book = bookRepository.findById(id).orElseThrow();
 
         ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
+
+        book.removeReaderBook(readerBook);
+        reader.removeReaderBook(readerBook);
 
         readerBookRepository.delete(readerBook);
 
@@ -160,12 +168,12 @@ public class BookService {
         }
 
         ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
-        
+
         int currentPage = readerBook.getCurrentPage();
         int nextPage = currentPage + 1;
         readerBook.setCurrentPage(nextPage);
         readerBookRepository.save(readerBook);
-        
+
         return getPageDTO(readerBook, reader, book);
     }
 

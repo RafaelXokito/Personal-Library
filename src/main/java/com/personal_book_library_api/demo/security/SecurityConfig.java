@@ -76,6 +76,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(configurer ->
                 configurer
+                        .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/add").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/read").hasAuthority("READER")
@@ -83,6 +84,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/books/nextpage").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/previouspage").hasAuthority("READER")
                         .requestMatchers(HttpMethod.GET, "/api/books/*/currentreaders").hasAuthority("WRITER")
+                        .requestMatchers(HttpMethod.GET, "/api/books/*/readers").hasAuthority("WRITER")
                         .requestMatchers(HttpMethod.POST, "/api/books").hasAuthority("WRITER")
                         .anyRequest().permitAll()
                 );

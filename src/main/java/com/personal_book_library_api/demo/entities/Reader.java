@@ -53,4 +53,8 @@ public class Reader extends User {
     public void removeBook(Book book) {
         this.books.remove(book);
     }
+
+    public void removeReaderBook(ReaderBook readerBook) {
+        this.books.remove(readerBook);
+    }
 }
