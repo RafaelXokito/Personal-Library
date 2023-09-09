@@ -7,6 +7,7 @@ import com.personal_book_library_api.demo.entities.ReaderBook;
 import com.personal_book_library_api.demo.entities.Writer;
 import com.personal_book_library_api.demo.services.WriterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,10 +52,10 @@ public class BookRestController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<BookDTO> save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Book book) {
+    public ResponseEntity<BookSingleDTO> save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Book book) {
         // userDetails.getUsername() It returns the email from the authenticated user
         bookService.save(book, userDetails.getUsername());
-        return ResponseEntity.ok(BookDTO.from(book));
+        return new ResponseEntity<>(BookSingleDTO.from(book), HttpStatus.CREATED);
     }
 
     @PatchMapping("/books/{id}/add")

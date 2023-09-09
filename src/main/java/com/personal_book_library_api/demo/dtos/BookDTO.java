@@ -1,6 +1,7 @@
 package com.personal_book_library_api.demo.dtos;
 
 import com.personal_book_library_api.demo.entities.Book;
+import com.personal_book_library_api.demo.entities.Reader;
 import com.personal_book_library_api.demo.entities.ReaderBook;
 import lombok.*;
 

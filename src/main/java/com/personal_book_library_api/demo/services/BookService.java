@@ -51,6 +51,7 @@ public class BookService {
         return bookRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public ReaderBook addBook(String email, Long id) {
         Reader reader = readerRepository.findByEmail(email).orElseThrow();
 
@@ -71,6 +72,7 @@ public class BookService {
         return readerBook;
     }
 
+    @Transactional
     public ReaderBook removeBook(String username, Long id) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 
@@ -96,6 +98,7 @@ public class BookService {
         return readerBook;
     }
 
+    @Transactional
     public PageDTO readBook(String username, Long bookId) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 
@@ -106,11 +109,14 @@ public class BookService {
         }
 
         Book currentBook = reader.getCurrentBook();
-        if (currentBook != null) {
+        // If the reader has a current book different from the book that is asking to read
+        // remove the reader from the current book
+        if (currentBook != null && !bookId.equals(currentBook.getId())) {
             currentBook.removeCurrentReader(reader);
         }
 
-        if (currentBook != null && !currentBook.getId().equals(bookId)) {
+        // If the reader doesn't have a current book or the current book is different from the book that is asking to read
+        if (currentBook == null || !bookId.equals(currentBook.getId())) {
             reader.setCurrentBook(book);
             book.addCurrentReader(reader);
             readerRepository.save(reader);
@@ -135,6 +141,13 @@ public class BookService {
         int charsPerPageAdjusted = (int) (charsPerPageDefault / fontSizeRatio);
 
         int start = (currentPage - 1) * charsPerPageAdjusted;
+
+        // Ensure that 'start' don't exceed the book's content length.
+        // Imagina a book with less than 1000 characters.
+        if (start > book.getContent().length()) {
+            return new PageDTO(currentPage, charsPerPageAdjusted, book.getContent());
+        }
+
         int end = start + charsPerPageAdjusted;
 
         // Adjust the 'start' position to the next newline character
@@ -159,6 +172,7 @@ public class BookService {
         return new PageDTO(currentPage, charsPerPageAdjusted, book.getContent().substring(start, end));
     }
 
+    @Transactional
     public PageDTO nextPage(String username) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 
@@ -177,6 +191,7 @@ public class BookService {
         return getPageDTO(readerBook, reader, book);
     }
 
+    @Transactional
     public PageDTO previousPage(String username) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 

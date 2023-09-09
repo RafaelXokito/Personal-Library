@@ -9,9 +9,9 @@ import com.personal_book_library_api.demo.entities.User;
 import com.personal_book_library_api.demo.entities.Writer;
 import com.personal_book_library_api.demo.security.TokenGenerator;
 import com.personal_book_library_api.demo.services.UserManager;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,8 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,7 +47,7 @@ public class AuthController {
             authentication = UsernamePasswordAuthenticationToken.authenticated(reader, signupDTO.getPassword(), reader.getAuthorities());
         }
 
-        return ResponseEntity.ok(tokenGenerator.createToken(authentication));
+        return new ResponseEntity<>(tokenGenerator.createToken(authentication), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
