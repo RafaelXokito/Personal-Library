@@ -1,10 +1,9 @@
 package com.personal_book_library_api.demo.rest;
 
-import com.personal_book_library_api.demo.dtos.LoginDTO;
-import com.personal_book_library_api.demo.dtos.SignupDTO;
-import com.personal_book_library_api.demo.dtos.TokenDTO;
+import com.personal_book_library_api.demo.dtos.auth.LoginDTO;
+import com.personal_book_library_api.demo.dtos.auth.SignupDTO;
+import com.personal_book_library_api.demo.dtos.auth.TokenDTO;
 import com.personal_book_library_api.demo.entities.Reader;
-import com.personal_book_library_api.demo.entities.User;
 import com.personal_book_library_api.demo.entities.Writer;
 import com.personal_book_library_api.demo.security.TokenGenerator;
 import com.personal_book_library_api.demo.services.UserManager;
@@ -29,13 +28,10 @@ public class AuthController {
 
     @Autowired
     UserManager userDetailsManager;
-
     @Autowired
     TokenGenerator tokenGenerator;
-
     @Autowired
     DaoAuthenticationProvider daoAuthenticationProvider;
-
     @Autowired
     @Qualifier("jwtRefreshTokenAuthProvider")
     JwtAuthenticationProvider refreshTokenAuthProvider;

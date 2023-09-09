@@ -1,4 +1,4 @@
-package com.personal_book_library_api.demo.dtos;
+package com.personal_book_library_api.demo.dtos.auth;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,14 @@
 package com.personal_book_library_api.demo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class ReaderBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,44 +24,9 @@ public class ReaderBook {
 
     private int currentPage;
 
-    public ReaderBook() {
-    }
-
     public ReaderBook(Reader reader, Book book, Integer currentPage) {
         this.reader = reader;
         this.book = book;
-        this.currentPage = currentPage;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Reader getReader() {
-        return reader;
-    }
-
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
     }
 }

@@ -3,13 +3,19 @@ package com.personal_book_library_api.demo.entities;
 import java.util.*;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Reader extends User {
     
     @Column(nullable = false, unique = true)
@@ -23,8 +29,6 @@ public class Reader extends User {
     @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
     private List<ReaderBook> books = new ArrayList<>();
 
-    public Reader() {
-    }
 
     public Reader(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password) {
         super(firstName, lastName, email, password);
@@ -40,30 +44,6 @@ public class Reader extends User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("READER"));
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public int getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    public Book getCurrentBook() {
-        return currentBook;
-    }
-
-    public void setCurrentBook(Book currentBook) {
-        this.currentBook = currentBook;
-    }
-
-    public List<ReaderBook> getBooks() {
-        return books;
     }
 
     public void addReaderBook(ReaderBook book) {

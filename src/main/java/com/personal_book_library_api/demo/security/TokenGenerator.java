@@ -1,6 +1,6 @@
 package com.personal_book_library_api.demo.security;
 
-import com.personal_book_library_api.demo.dtos.TokenDTO;
+import com.personal_book_library_api.demo.dtos.auth.TokenDTO;
 import com.personal_book_library_api.demo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

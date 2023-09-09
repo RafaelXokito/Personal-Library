@@ -1,5 +1,12 @@
 package com.personal_book_library_api.demo.dtos;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class PageDTO {
     private int page;
     private int size;
@@ -9,32 +16,5 @@ public class PageDTO {
         this.page = page;
         this.size = size;
         this.content = content;
-    }
-
-    public PageDTO() {
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 }

@@ -40,9 +40,10 @@ public class BookService {
 
     @Transactional
     public void save(Book book, String email) {
-        Writer writer = writerRepository.findByEmail(email).orElse(null);
+        Writer writer = writerRepository.findByEmail(email).orElseThrow();
 
         book.setWriter(writer);
+        writer.addBook(book);
         bookRepository.save(book);
     }
 

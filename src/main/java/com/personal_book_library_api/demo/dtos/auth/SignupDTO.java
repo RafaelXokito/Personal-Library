@@ -1,4 +1,4 @@
-package com.personal_book_library_api.demo.dtos;
+package com.personal_book_library_api.demo.dtos.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
