@@ -42,7 +42,7 @@ This document provides detailed information on how to interact with the Personal
 - **Method**: GET
 
 #### 7. GET Books Search
-- **URL**: `http://localhost:8080/api/books/search?title=${title}&keyword=${description}&writerName=${content}
+- **URL**: `http://localhost:8080/api/books/search?title=${title}&keyword=${description}&writerName=${content}`
 - **Method**: GET
 
 #### 8. GET Book
