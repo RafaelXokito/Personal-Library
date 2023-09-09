@@ -42,11 +42,11 @@ public class AuthController {
         if (signupDTO.isWriter()) {
             Writer writer = new Writer(signupDTO.getFirstName(), signupDTO.getLastName(), signupDTO.getEmail(), signupDTO.getPassword());
             userDetailsManager.createUser(writer);
-            authentication = UsernamePasswordAuthenticationToken.authenticated(writer, signupDTO.getPassword(), Collections.EMPTY_LIST);
+            authentication = UsernamePasswordAuthenticationToken.authenticated(writer, signupDTO.getPassword(), writer.getAuthorities());
         } else {
             Reader reader = new Reader(signupDTO.getFirstName(), signupDTO.getLastName(), signupDTO.getEmail(), signupDTO.getPassword());
             userDetailsManager.createUser(reader);
-            authentication = UsernamePasswordAuthenticationToken.authenticated(reader, signupDTO.getPassword(), Collections.EMPTY_LIST);
+            authentication = UsernamePasswordAuthenticationToken.authenticated(reader, signupDTO.getPassword(), reader.getAuthorities());
         }
 
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));

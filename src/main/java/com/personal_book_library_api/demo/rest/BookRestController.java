@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import com.personal_book_library_api.demo.services.BookService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
