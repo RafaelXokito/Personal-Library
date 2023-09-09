@@ -1,13 +1,13 @@
 package com.personal_book_library_api.demo.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 public class Writer extends User {
@@ -24,6 +24,11 @@ public class Writer extends User {
     public Writer(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password) {
         super(firstName, lastName, email, password);
         this.books = new ArrayList<>();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("WRITER"));
     }
 
     @PrePersist

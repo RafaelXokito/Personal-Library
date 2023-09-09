@@ -1,13 +1,13 @@
 package com.personal_book_library_api.demo.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.validation.constraints.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 public class Reader extends User {
@@ -35,6 +35,11 @@ public class Reader extends User {
     @PrePersist
     private void prePersist() {
         this.idCard = "W-" + UUID.randomUUID().toString();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("READER"));
     }
 
     public String getIdCard() {
