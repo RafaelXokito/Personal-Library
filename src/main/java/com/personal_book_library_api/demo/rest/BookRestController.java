@@ -68,7 +68,7 @@ public class BookRestController {
 
     @DeleteMapping("/books/{id}/remove")
     public ResponseEntity<TypeResolutionContext.Empty> removeBook(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
-        ReaderBook readerBook = bookService.removeBook(userDetails.getUsername(), id);
+        bookService.removeBook(userDetails.getUsername(), id);
         return ResponseEntity.ok().build();
     }
 
@@ -141,6 +141,7 @@ public class BookRestController {
         bookDTO.setId(book.getId());
         bookDTO.setTitle(book.getTitle());
         bookDTO.setDescription(book.getDescription());
+        bookDTO.setWriterName(book.getWriter().getFirstName() + " " + book.getWriter().getLastName());
 
         return bookDTO;
     }

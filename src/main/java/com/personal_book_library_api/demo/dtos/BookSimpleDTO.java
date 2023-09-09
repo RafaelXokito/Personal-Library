@@ -7,6 +7,7 @@ public class BookSimpleDTO {
     private Long id;
     private String title;
     private String description;
+    private String writerName;
 
     public BookSimpleDTO() {
     }
@@ -15,6 +16,13 @@ public class BookSimpleDTO {
         this.id = id;
         this.title = title;
         this.description = description;
+    }
+
+    public BookSimpleDTO(Long id, String title, String description, String writerName) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.writerName = writerName;
     }
 
     public Long getId() {
@@ -41,4 +49,11 @@ public class BookSimpleDTO {
         this.description = description;
     }
 
+    public String getWriterName() {
+        return writerName;
+    }
+
+    public void setWriterName(String writerName) {
+        this.writerName = writerName;
+    }
 }
