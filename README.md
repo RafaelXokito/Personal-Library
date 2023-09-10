@@ -3,6 +3,26 @@
 ## Overview
 This document provides detailed information on how to interact with the Personal Library API. For any endpoints requiring authorization, ensure you have the proper Bearer token included in the request headers.
 
+### Personal Library API Documentation
+
+![Postman Tests](assets/postman.png)
+![Cypress Tests](assets/cypress_tests.png)
+
+## Table of Contents
+
+- [API Endpoints](#api-endpoints)
+  - [User Authentication](#user-authentication)
+  - [Book Management](#book-management)
+  - [Book Details](#book-details)
+  - [Reading Flow and Pagination](#reading-flow-and-pagination)
+- [Frontend](#frontend)
+  - [Features](#features)
+- [Testing](#testing)
+  - [Cypress](#cypress)
+  - [Postman](#postman)
+- [Conclusion](#conclusion)
+
+
 ## API Endpoints
 
 ### User Authentication
@@ -49,14 +69,21 @@ This document provides detailed information on how to interact with the Personal
 - **URL**: `http://localhost:8080/api/books/${bookId}`
 - **Method**: GET
 
-#### 9. Add Book
+#### 9. Authenticated User's Books
+- **Description**: Retrieves a list of books associated with the authenticated user.
+- **URL**: `http://localhost:8080/api/books/my`
+- **Method**: GET
+- **Headers**:
+  - Authorization: Bearer [token_value]
+
+#### 10. Add Book
 - **Description**: Adds a book to the system.
 - **URL**: `http://localhost:8080/api/books/${bookId}/add`
 - **Method**: PATCH
 - **Headers**:
     - Authorization: Bearer [token_value]
 
-#### 10. Remove Book
+#### 11. Remove Book
 - **Description**: Removes a book from the system.
 - **URL**: `http://localhost:8080/api/books/${bookId}/remove`
 - **Method**: DELETE
@@ -65,19 +92,19 @@ This document provides detailed information on how to interact with the Personal
 
 ### Book Details
 
-#### 11. GET Book Writer
+#### 12. GET Book Writer
 - **Description**: Retrieves the writer of the specified book.
 - **URL**: `http://localhost:8080/api/books/${bookId}/writer`
 - **Method**: GET
 
-#### 12. GET Book Current Readers
+#### 13. GET Book Current Readers
 - **Description**: Retrieves a list of current readers for a given book.
 - **URL**: `http://localhost:8080/api/books/${bookId}/currentreaders`
 - **Method**: GET
 - **Headers**:
     - Authorization: Bearer [token_value]
 
-#### 13. GET Book Readers
+#### 14. GET Book Readers
 - **Description**: Retrieves a list of all readers of a specified book.
 - **URL**: `http://localhost:8080/api/books/${bookId}/readers`
 - **Method**: GET
@@ -86,26 +113,65 @@ This document provides detailed information on how to interact with the Personal
 
 ### Reading Flow and Pagination
 
-#### 14. Read Book
+#### 15. Read Book
 - **Description**: Marks a book as read for the authenticated user.
 - **URL**: `http://localhost:8080/api/books/${bookId}/read`
 - **Method**: PATCH
 - **Headers**:
     - Authorization: Bearer [token_value]
 
-#### 15. Next Book Page
+#### 16. Next Book Page
 - **Description**: Navigates to the next page of book listings.
 - **URL**: `http://localhost:8080/api/books/nextpage`
 - **Method**: PATCH
 - **Headers**:
     - Authorization: Bearer [token_value]
 
-#### 16. Prev Book Page
+#### 17. Prev Book Page
 - **Description**: Navigates to the previous page of book listings.
 - **URL**: `http://localhost:8080/api/books/prevpage`
 - **Method**: PATCH
 - **Headers**:
     - Authorization: Bearer [token_value]
+
+## Frontend
+
+The frontend for the Personal Library API has been developed using React. It provides a user-friendly interface to interact with all the features and functionalities offered by the backend API.
+
+**Frontend Repository:** [Personal Library Frontend](link_to_frontend_repository)
+
+### Features:
+- **User Authentication:** Secure login and registration system.
+- **Book Management:** Add, update, and remove books from your collection.
+- **Search Functionality:** Search for books based on title, author, or genre.
+- **Book Details:** View detailed information about each book, including its writer and readers.
+- **Responsive Design:** Looks great on both desktop and mobile devices.
+
+## Testing
+
+### Cypress
+
+End-to-end tests have been written using Cypress to ensure the frontend interacts correctly with the backend API. These tests cover various user scenarios and edge cases.
+
+To run the tests, navigate to the root directory of the frontend project and execute:
+
+```bash
+npx cypress open
+```
+
+All test files are located in the `/tests` folder.
+
+### Postman
+
+For API testing and documentation, a Postman collection has been provided. This collection contains all the API endpoints with example requests.
+
+**Collection File:** `PersonalLibrary.postman_collection.json`
+
+To use the Postman collection:
+
+1. Open Postman.
+2. Click on "Import" and select the `PersonalLibrary.postman_collection.json` file from the root directory.
+3. Once imported, you can send requests to the API endpoints directly from Postman.
 
 ## Conclusion
 Interact with the API endpoints as described to manage and retrieve data from the Personal Library system. Always ensure to use the correct headers and body parameters as necessary.

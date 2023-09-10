@@ -78,6 +78,7 @@ public class SecurityConfig {
                 configurer
                         .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/books/my").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/add").hasAuthority("READER")
                         .requestMatchers(HttpMethod.PATCH, "/api/books/*/read").hasAuthority("READER")
                         .requestMatchers(HttpMethod.DELETE, "/api/books/*/remove").hasAuthority("READER")

@@ -26,14 +26,22 @@ public class Reader extends User {
     @ManyToOne
     private Book currentBook;
 
-    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ReaderBook> books = new ArrayList<>();
-
 
     public Reader(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password) {
         super(firstName, lastName, email, password);
         currentBook = null;
         books = new ArrayList<>();
+    }
+
+    @Override
+    public List<Book> getMyBooks() {
+        List<Book> books = new ArrayList<>();
+        for (ReaderBook readerBook : this.books) {
+            books.add(readerBook.getBook());
+        }
+        return books;
     }
 
     @PrePersist

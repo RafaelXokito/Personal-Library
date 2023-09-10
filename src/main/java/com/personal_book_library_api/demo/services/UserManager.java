@@ -1,7 +1,9 @@
 package com.personal_book_library_api.demo.services;
 
 import com.personal_book_library_api.demo.daos.UserRepository;
+import com.personal_book_library_api.demo.entities.Book;
 import com.personal_book_library_api.demo.entities.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,13 +11,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserManager implements UserDetailsManager {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
     @Override

@@ -2,19 +2,21 @@ package com.personal_book_library_api.demo.services;
 
 import java.util.List;
 
+import com.nimbusds.jose.util.Pair;
 import com.personal_book_library_api.demo.daos.ReaderBookRepository;
 import com.personal_book_library_api.demo.daos.ReaderRepository;
 import com.personal_book_library_api.demo.daos.WriterRepository;
 import com.personal_book_library_api.demo.dtos.PageDTO;
-import com.personal_book_library_api.demo.entities.Reader;
-import com.personal_book_library_api.demo.entities.ReaderBook;
-import com.personal_book_library_api.demo.entities.Writer;
+import com.personal_book_library_api.demo.entities.*;
 import jakarta.transaction.Transactional;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.personal_book_library_api.demo.daos.BookRepository;
-import com.personal_book_library_api.demo.entities.Book;
 
 @Service
 public class BookService {
@@ -125,10 +127,18 @@ public class BookService {
 
         ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
 
-        return getPageDTO(readerBook, reader, book);
+        ResultFromPageDTO resultFromPageDTO = getPageDTO(readerBook, reader, book);
+
+        return resultFromPageDTO.pageDTO;
     }
 
-    private static PageDTO getPageDTO(ReaderBook readerBook, Reader reader, Book book) {
+    @Data
+    private static final class ResultFromPageDTO {
+        private final PageDTO pageDTO;
+        private final boolean sucess;
+    }
+
+    private static ResultFromPageDTO getPageDTO(ReaderBook readerBook, Reader reader, Book book) {
         int currentPage = readerBook.getCurrentPage();
 
         // Assuming a default font size fits 1000 characters per page
@@ -144,8 +154,9 @@ public class BookService {
 
         // Ensure that 'start' don't exceed the book's content length.
         // Imagina a book with less than 1000 characters.
-        if (start > book.getContent().length()) {
-            return new PageDTO(currentPage, charsPerPageAdjusted, book.getContent());
+        if (start > book.getContent().length() & book.getContent().length() < charsPerPageDefault) {
+            charsPerPageAdjusted = book.getContent().length();
+            return new ResultFromPageDTO(new PageDTO(currentPage, charsPerPageAdjusted, book.getContent()), false);
         }
 
         int end = start + charsPerPageAdjusted;
@@ -169,8 +180,16 @@ public class BookService {
             }
         }
 
-        return new PageDTO(currentPage, charsPerPageAdjusted, book.getContent().substring(start, end));
+        return new ResultFromPageDTO(new PageDTO(currentPage, charsPerPageAdjusted, book.getContent().substring(start, end)),  true);
     }
+
+    private static int getMaxNumberOfPages(Book book, Reader reader) {
+        int charsPerPageDefault = 1000;
+        double fontSizeRatio = (double) reader.getFontSize() / 12.0;
+        int charsPerPageAdjusted = (int) (charsPerPageDefault / fontSizeRatio);
+        return (int) Math.ceil((double) book.getContent().length() / charsPerPageAdjusted);
+    }
+
 
     @Transactional
     public PageDTO nextPage(String username) {
@@ -184,11 +203,23 @@ public class BookService {
         ReaderBook readerBook = readerBookRepository.findByReaderAndBook(reader, book).orElseThrow();
 
         int currentPage = readerBook.getCurrentPage();
-        int nextPage = currentPage + 1;
-        readerBook.setCurrentPage(nextPage);
-        readerBookRepository.save(readerBook);
+        if (currentPage <= getMaxNumberOfPages(book, reader)) {
+            currentPage++;
+        }
+        readerBook.setCurrentPage(currentPage);
 
-        return getPageDTO(readerBook, reader, book);
+        ResultFromPageDTO resultFromPageDTO = getPageDTO(readerBook, reader, book);
+
+        System.out.println(resultFromPageDTO.sucess);
+        if (resultFromPageDTO.sucess) {
+            readerBookRepository.save(readerBook);
+        } else {
+            readerBook.setCurrentPage(--currentPage);
+            readerBookRepository.save(readerBook);
+            resultFromPageDTO.pageDTO.setPage(currentPage);
+        }
+
+        return resultFromPageDTO.pageDTO;
     }
 
     @Transactional
@@ -207,9 +238,16 @@ public class BookService {
             currentPage--;
         }
         readerBook.setCurrentPage(currentPage);
-        readerBookRepository.save(readerBook);
 
-        return getPageDTO(readerBook, reader, book);
+        ResultFromPageDTO resultFromPageDTO = getPageDTO(readerBook, reader, book);
+
+        if (resultFromPageDTO.sucess) {
+            readerBookRepository.save(readerBook);
+        } else {
+            resultFromPageDTO.pageDTO.setPage(++currentPage);
+        }
+
+        return resultFromPageDTO.pageDTO;
     }
 
     public List<Book> search(String title, String keyword, String writerName) {
@@ -232,4 +270,8 @@ public class BookService {
         return book.getWriter();
     }
 
+    @Transactional
+    public List<Book> getMyBooks(User user) {
+        return user.getMyBooks();
+    }
 }

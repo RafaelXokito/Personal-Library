@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import com.personal_book_library_api.demo.dtos.*;
 import com.personal_book_library_api.demo.entities.Book;
 import com.personal_book_library_api.demo.entities.ReaderBook;
+import com.personal_book_library_api.demo.entities.User;
 import com.personal_book_library_api.demo.entities.Writer;
+import com.personal_book_library_api.demo.services.UserManager;
 import com.personal_book_library_api.demo.services.WriterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,11 @@ public class BookRestController {
     public ResponseEntity<List<BookSimpleDTO>> findAll() {
         List<Book> books = bookService.findAll();
         return ResponseEntity.ok(BookSimpleDTO.from(books));
+    }
+
+    @GetMapping("/books/my")
+    public ResponseEntity<List<BookSimpleDTO>> findMyBooks(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(BookSimpleDTO.from(bookService.getMyBooks(user)));
     }
 
     @GetMapping("/books/search")

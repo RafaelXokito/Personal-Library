@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
@@ -50,6 +51,8 @@ public abstract class User implements UserDetails {
     }
 
     public abstract String getIdCard();
+
+    public abstract List<Book> getMyBooks();
 
     @Override
     public String getUsername() {

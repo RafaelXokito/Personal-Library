@@ -21,13 +21,17 @@ public class Writer extends User {
     @Column(nullable = false, unique = true)
     private String idCard;
 
-    @OneToMany(mappedBy = "writer")
-    private List<Book> books;
-
+    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    private List<Book> books = new ArrayList<>();
 
     public Writer(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String password) {
         super(firstName, lastName, email, password);
         this.books = new ArrayList<>();
+    }
+
+    @Override
+    public List<Book> getMyBooks() {
+        return this.books;
     }
 
     @Override

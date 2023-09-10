@@ -23,8 +23,8 @@ public class UserDTO {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .active(user.isActive())
-                .idCard(role)
-                .role(idCard)
+                .idCard(idCard)
+                .role(role)
                 .build();
     }
 }
