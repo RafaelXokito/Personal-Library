@@ -5,8 +5,10 @@ This document provides detailed information on how to interact with the Personal
 
 ### Personal Library API Documentation
 
-![Postman Tests](assets/postman.png)
-![Cypress Tests](assets/cypress_tests.png)
+<p align="center">
+  <img src="assets/postman.png" alt="Postman Tests" width="45%" />
+  <img src="assets/cypress_tests.png" alt="Cypress Tests" width="45%" />
+</p>
 
 ## Table of Contents
 
