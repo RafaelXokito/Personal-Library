@@ -1,0 +1,594 @@
+{
+	"info": {
+		"_postman_id": "7cb2a473-6a4d-44bf-9a56-1fb096614af4",
+		"name": "PersonalLibrary",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6815914",
+		"_collection_link": "https://martian-crescent-411159.postman.co/workspace/Team-Workspace~8e544404-abcc-465c-8c41-502145d24e55/collection/6815914-7cb2a473-6a4d-44bf-9a56-1fb096614af4?action=share&source=collection_link&creator=6815914"
+	},
+	"item": [
+		{
+			"name": "Create Writer - DEPRECATED",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Leslie2\",\n    \"lastName\": \"Andrews2\",\n    \"email\": \"leslie@luv2code.com\",\n    \"password\": \"ThisIsMyFirstPassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/writers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"writers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Reader - DEPRECATED",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Leslie2Reader\",\n    \"lastName\": \"Andrews2\",\n    \"email\": \"leslieReader2@luv2code.com\",\n    \"password\": \"ThisIsMyFirstPassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/readers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"readers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEiLCJleHAiOjE2OTQzMDIyMTEsImlhdCI6MTY5NDI5ODYxMX0.UrW6gED4gK0tIvwCCUHa55MaeJHZYAnm1WdaFLvXyfalmOjxzrodoEBBubY9HrK2nZfMp2BYWcwz0KHKXGv6uPdXaGl0ox-ythEI6VUbcKzibWVYX_UNZzfUOCLMbeL8KVn5zPPt-vLz5KcBkWPJRBgyHCwSKnqnOVX_3Im83WeyujG6yQ-v1V1w9X62ypyh9T4OwKVAajuYbU5Z4VwZKTQJh9paGurm8Ji3eij2KsiasPXHH1Mbg2GAiVpGgw9QVQEUq83jgaBzbi-TZrFnHTv1o8xJGjEccDqVXeQcbaGxgK__VwNLRbLEvkz93Exb53bM7LmZj43jiAOMzsbrLg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"The Enchanted Forest2\",\n    \"description\": \"A captivating tale of mystery and magic set in a dense, enchanted forest where every tree has a story to tell.\",\n    \"content\": \"Once upon a time, in a land far, far away, there was a dense forest that was said to be enchanted. The trees were tall and majestic, their leaves whispering secrets to those who dared to listen. Among these trees lived creatures of all kinds: talking animals, mischievous fairies, and even ancient spirits. Our story begins with a young girl named Lila, who ventured into the forest in search of adventure.\\nLila was no ordinary girl. She had the unique ability to communicate with animals and plants. As she walked deeper into the forest, she could hear the trees sharing their ancient tales. The birds sang songs of old battles and love stories, while the wind carried whispers of forgotten legends.\\nOne day, as Lila was exploring a particularly dense part of the forest, she stumbled upon a hidden clearing. In the center of the clearing stood a magnificent, shimmering tree. Its bark was silver, and its leaves were made of pure gold. Lila approached the tree with awe and wonder.\\nAs she touched the tree, a soft voice echoed in her mind. 'Greetings, young traveler,' the voice said. 'I am the Guardian Tree of this forest. You have been chosen to embark on a special quest.'\\nLila was taken aback. 'Me? Why me?' she asked.\\nThe Guardian Tree replied, 'You possess a rare gift, Lila. The ability to understand and communicate with nature. The forest is in grave danger, and we need your help to save it.'\\nLila felt a surge of determination. 'Tell me what I need to do,' she said.\\nThe Guardian Tree explained that an evil sorcerer named Moros had cast a dark spell on the forest. This spell was draining the life force of the trees and creatures, turning them into stone. The only way to break the spell was to find the three Crystal Orbs hidden deep within the forest.\\nLila set out on her quest, determined to find the Crystal Orbs and save the forest. Along the way, she encountered many challenges. She had to solve riddles, battle dark creatures, and navigate through treacherous terrains. But with her unique ability to communicate with nature, Lila was able to overcome each obstacle.\\nAs she journeyed deeper into the forest, Lila made many friends. A wise old owl named Oren, who shared his vast knowledge of the forest's secrets. A brave squirrel named Sylas, who helped her navigate through the dense foliage. And a kind-hearted fairy named Faela, who healed her wounds with her magical powers.\\nTogether, they faced many dangers. They were chased by shadow wolves, trapped in spider webs, and almost drowned in quicksand. But with each challenge, their bond grew stronger, and they became an unstoppable team.\\nAfter weeks of searching, Lila and her friends finally found the three Crystal Orbs. They were hidden in a cave, guarded by a fierce dragon. But with their combined strength and intelligence, they were able to defeat the dragon and retrieve the orbs.\\nWith the Crystal Orbs in her possession, Lila returned to the Guardian Tree. She placed the orbs in a special altar, and a blinding light filled the clearing. The dark spell was broken, and the forest was restored to its former glory.\\nThe trees and creatures came back to life, and the forest was filled with joy and celebration. Lila was hailed as a hero, and the Guardian Tree bestowed upon her a special title: 'The Protector of the Forest.'\\nLila's journey had come to an end, but her legacy lived on. She had saved the forest from the clutches of evil and had proven that with courage, determination, and a little help from friends, anything is possible.\\nAnd so, the story of Lila, the Protector of the Forest, became a legend, passed down from generation to generation. A tale of bravery, friendship, and the power of nature.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Books Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/search?title=Forest2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"search"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Forest2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Book",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Book Writer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEiLCJleHAiOjE2OTQyODE3MDQsImlhdCI6MTY5NDI3ODEwNH0.s8wBMSUvSsm2hZnpac-c_eBul3PzB1wuKkH0x9ML_RFzBqwHlmquyJw3q_1_r2yQwtxrGdYlB53Ms7GtvqWCLdVHwIijf37ySbfwFr4pnem7UpJxIiwF_iuIV1VUiDtZXHfTKWLKlta--7FyHAivEXs58Uyd2ZgfL-anrNHNM6HNI1LsS-L90z4plEhYnZOuKdvnYAGO778EMJGATeWkm3TrwtVlJZ9ET-YWEbvIvSPN_660LneV0CcUSZSgjrrWiGAXNrTNbRXbUQ_-uoMTtZUCdObX7LCCTN2PXnoMxGGkGGRqTWKRzH0yxQL3T6SDu6PGhaId9EK4mlOlN4QVCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/9/writer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"9",
+						"writer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Book Current Readers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEiLCJleHAiOjE2OTQyODE3MDQsImlhdCI6MTY5NDI3ODEwNH0.s8wBMSUvSsm2hZnpac-c_eBul3PzB1wuKkH0x9ML_RFzBqwHlmquyJw3q_1_r2yQwtxrGdYlB53Ms7GtvqWCLdVHwIijf37ySbfwFr4pnem7UpJxIiwF_iuIV1VUiDtZXHfTKWLKlta--7FyHAivEXs58Uyd2ZgfL-anrNHNM6HNI1LsS-L90z4plEhYnZOuKdvnYAGO778EMJGATeWkm3TrwtVlJZ9ET-YWEbvIvSPN_660LneV0CcUSZSgjrrWiGAXNrTNbRXbUQ_-uoMTtZUCdObX7LCCTN2PXnoMxGGkGGRqTWKRzH0yxQL3T6SDu6PGhaId9EK4mlOlN4QVCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/17/currentreaders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"17",
+						"currentreaders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Book Readers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEiLCJleHAiOjE2OTQyODE3MDQsImlhdCI6MTY5NDI3ODEwNH0.s8wBMSUvSsm2hZnpac-c_eBul3PzB1wuKkH0x9ML_RFzBqwHlmquyJw3q_1_r2yQwtxrGdYlB53Ms7GtvqWCLdVHwIijf37ySbfwFr4pnem7UpJxIiwF_iuIV1VUiDtZXHfTKWLKlta--7FyHAivEXs58Uyd2ZgfL-anrNHNM6HNI1LsS-L90z4plEhYnZOuKdvnYAGO778EMJGATeWkm3TrwtVlJZ9ET-YWEbvIvSPN_660LneV0CcUSZSgjrrWiGAXNrTNbRXbUQ_-uoMTtZUCdObX7LCCTN2PXnoMxGGkGGRqTWKRzH0yxQL3T6SDu6PGhaId9EK4mlOlN4QVCQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/17/readers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"17",
+						"readers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET My Books",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjIiLCJleHAiOjE2OTQzMDgyODcsImlhdCI6MTY5NDMwNDY4N30.I-fth0ctEGaoKvgGX-YIKDnq-DZpDPDWyPaorUuNi-3wUbLccRYvdBJd-rCJHr0k37-G2uamD2EB0cOwpBVbqDo7G_RTTu0h-fHq807UwhXxPAjMT4SuYD05WL56ZYp_XRfcsGrJicpd4tSMbUwBAtpM_vocxJ8dnz7RumlMoMrELPkYoZWHiuuItGHNt2jnIdMBYyWSM7REORZn9NI2-GeMxIrDoG3LHzXKqc_b_0Z-KEDmaQkfCDXd2Mrp6zSihUEKpA1qQjLX8m43QsJvETptDvRYpmBUa6OfEGfFw1zHZA4z-XIIRZVLqqz8qFK2AcWZ4z-PG1qFJLbwdaWMhg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/my",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjIiLCJleHAiOjE2OTQzMTE5NTQsImlhdCI6MTY5NDMwODM1NH0.Vs2Bqq4StJLx31MMlHMZkXJaceZYR6tKndXVDvjjj8UQwwp7GAFZlMCtOEsPzSdOl_MsSLwYfHcYD7dnI3egzaI8Qpf0OLJiST0EUnSM70ol2voa8yRJZN9nwvlisUCgBsHHa2PCyCjL6Vt2LuPzjrHFNwarMgHUPehm87Wpj9kVmo3SY4X3akUM8lam_6neui1EYInCxKo1wNNX-CllvsZxF30PF62BCt_CmkU5CfKA7FDhE0aunHJg3Yz2qRCfXBLs8Jzu-2FxlY60dELvXOmKYPM1qcd96h0DCi7VxpGZgRbHZ81mmBkd0NkmlinaRVMXi_KyRh6uscuqVNrarQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/52/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"52",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjMiLCJleHAiOjE2OTQyODI1MjEsImlhdCI6MTY5NDI3ODkyMX0.kmj8Mi5lJcmEaZ1oT58Y3vwGwcAPw79T8J1IHRxxnsJviBQTFni1WDoS2RtKSLKB7DLHcllznGjWC58-V3fjkBbxeC7PQ3scN0GdjhtL4MONHEkf9_GGTbCn1ZsrrjjFlmXDXpg7CANkBSfVeMH1Cr_RyLAwcFRocVWXhNZddXNTeFqD0JciRjxfi0drdaUhr9f4Jl5g3uNTo-ZrdNNOdhuE4bVTCDHOlDjPFpy_7aVyF4ljqU10b94aEjpR0Iyb-JLRUZ6HQUweQJIl2onmnDwkDpIEhapsqhgBr9ydrsgPbzAZcGDPpBAUos3QA-F15UBoXfcazmznyv1jQX3tDQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/8/remove",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"8",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjIiLCJleHAiOjE2OTQzMTE5NTQsImlhdCI6MTY5NDMwODM1NH0.Vs2Bqq4StJLx31MMlHMZkXJaceZYR6tKndXVDvjjj8UQwwp7GAFZlMCtOEsPzSdOl_MsSLwYfHcYD7dnI3egzaI8Qpf0OLJiST0EUnSM70ol2voa8yRJZN9nwvlisUCgBsHHa2PCyCjL6Vt2LuPzjrHFNwarMgHUPehm87Wpj9kVmo3SY4X3akUM8lam_6neui1EYInCxKo1wNNX-CllvsZxF30PF62BCt_CmkU5CfKA7FDhE0aunHJg3Yz2qRCfXBLs8Jzu-2FxlY60dELvXOmKYPM1qcd96h0DCi7VxpGZgRbHZ81mmBkd0NkmlinaRVMXi_KyRh6uscuqVNrarQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/17/read",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"17",
+						"read"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Next Book Page",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjIiLCJleHAiOjE2OTQzMTE5NTQsImlhdCI6MTY5NDMwODM1NH0.Vs2Bqq4StJLx31MMlHMZkXJaceZYR6tKndXVDvjjj8UQwwp7GAFZlMCtOEsPzSdOl_MsSLwYfHcYD7dnI3egzaI8Qpf0OLJiST0EUnSM70ol2voa8yRJZN9nwvlisUCgBsHHa2PCyCjL6Vt2LuPzjrHFNwarMgHUPehm87Wpj9kVmo3SY4X3akUM8lam_6neui1EYInCxKo1wNNX-CllvsZxF30PF62BCt_CmkU5CfKA7FDhE0aunHJg3Yz2qRCfXBLs8Jzu-2FxlY60dELvXOmKYPM1qcd96h0DCi7VxpGZgRbHZ81mmBkd0NkmlinaRVMXi_KyRh6uscuqVNrarQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/nextpage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"nextpage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prev Book Page",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjMiLCJleHAiOjE2OTQzMDM3NTEsImlhdCI6MTY5NDMwMDE1MX0.ALAb0tbDdxAU81Vj2ufeuWzhNs8Cit7VkWaCFncMtTJiWPCq4acN5w30tgMl7jTmksJ-dQXgkcTh4Kzsc25mERZVkPAhlb4Zpa3G6vJ-Y8wPv1_XzCZQw-ORSFyzkaFVeKkkeK9l2iGV4KQ2osqdqHtXeBI4n9za98f1oezc6vQce95cksc0pUzNy4dkrudWe99HXGy5mMjdP81ijbBsfX550KbIH_gj3m45gh8He_GfF09G1_IqAyDrnOrIaNTp7Rp4BIFhz6ovcv4qA8iwSOumkW1ymKrVk0MVu4e9wPNXplkM4W-vBBuQjcexlIgv1VsXop9fpHZD5Lz8qA_7QA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/books/previouspage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"previouspage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Leslie2\",\n    \"lastName\": \"Andrews2\",\n    \"email\": \"leslieWriter@luv2code.com\",\n    \"password\": \"ThisIsMyFirstPassword\",\n    \"isWriter\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"leslie@luv2code.com\",\n    \"password\": \"ThisIsMyFirstPassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEiLCJleHAiOjE2OTQzMDcwMzEsImlhdCI6MTY5NDMwMzQzMX0.kZf-YHfnBOx7M4gM4U1R80zTEbsnLDmz8j4ZfmAATfkZmNoklZKkQ9SjLXmQAc_BtZ0GVDcaxeg1b9dZJQteaLn6JWaG-E2JlXPrrR0KKb3szyQtNqypOw-jq1zHy87vVDt6VwJDCnBU0YybscLlNYAt_haCVZFqDDBnqYbyOi1OM6e8Tjfk5KDaHq11453F3bjSLGzC0mRhna0SoBZaLB0DgBCZSjVOHOQ7ammkfsbO858uvLFMOXB6qzhI26wW69T4MX-xf-JMtArnN7tWM8bL-cVeKGWUjmwT8qcjs-1DBAqdKWmdol6OENYdXMW4McNEX4leQa-yP4-cF4XqMw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUFwcCIsInN1YiI6IjEwIiwiZXhwIjoxNjk2ODU3MTEyLCJpYXQiOjE2OTQyNjUxMTJ9.Po2ci_Cp3jbra3d6-sqwa_-njh9NIDcuCalFT679H5BuR1G2B6KGMe-ScIc6hlArpIKIP5Jxc5PZ-KDpFK-0TT0oksFeBAJ68jm-lCQTUhfPECE2HKWvq5sBgY_UXKJ2_dPFg6a5-0YrNDwHaGxpSL1G_oIR79VJQwb5hYdt-tAK6nhiN2KXjpmW16qt31TLIfLKP10ZyuL_48U7xm9p-_qWAW0a05o8jVmpEGY7IKlmPPzM6tKYVQY1J7CpHBCzUBpc-cqzC8lQPat8zBH0nOaRiUYCzSnp82z_o__qW-ozUSwat82VMxQp4CTSxvUh97ykp2WBXmO1xBHmNIBYHA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

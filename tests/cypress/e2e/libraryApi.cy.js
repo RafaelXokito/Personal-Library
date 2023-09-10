@@ -95,6 +95,69 @@ describe('Library API Endpoints', () => {
         .should('equal', 200);
   });
 
+  it('Authenticated Writer user can retrieve their books', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/books/my',
+      headers: {
+        'Authorization': `Bearer ${writerToken}`
+      }
+    })
+    .then((response) => {
+      // Check status
+      expect(response.status).to.equal(200);  // Assuming 200 is the status for success
+
+      // Check that the returned data is an array (optional)
+      expect(response.body).to.be.an('array');
+
+      // Further assertions can be added here if necessary to check the content of the returned books
+    });
+  });
+
+  it('Authenticated Reader user can retrieve their books', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/books/my',
+      headers: {
+        'Authorization': `Bearer ${readerToken}`
+      }
+    })
+    .then((response) => {
+      // Check status
+      expect(response.status).to.equal(200);  // Assuming 200 is the status for success
+
+      // Check that the returned data is an array (optional)
+      expect(response.body).to.be.an('array');
+
+      // Further assertions can be added here if necessary to check the content of the returned books
+    });
+  });
+
+  it('Endpoint should return 401 if no token is provided', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/books/my',
+      failOnStatusCode: false // this ensures Cypress does not fail on a non-2xx HTTP status
+    })
+    .then((response) => {
+      expect(response.status).to.equal(401);
+    });
+  });
+
+  it('Endpoint should return 401 if an invalid token is provided', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/books/my',
+      headers: {
+        'Authorization': `Bearer invalidToken1234567890`
+      },
+      failOnStatusCode: false
+    })
+    .then((response) => {
+      expect(response.status).to.equal(401);
+    });
+  });
+
   it('Reader can add a book', () => {
     cy.request({
       method: 'PATCH',
