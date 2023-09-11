@@ -1,7 +1,8 @@
 # Personal Library API Documentation
 
 ## Overview
-This document provides detailed information on how to interact with the Personal Library API. For any endpoints requiring authorization, ensure you have the proper Bearer token included in the request headers.
+
+The Personal Library API is a robust backend system designed to manage and interact with a personal book library. This document provides a technical overview of the project, highlighting the technologies used, best practices followed, and the structure of the project.
 
 ### Personal Library API Documentation
 
@@ -10,8 +11,19 @@ This document provides detailed information on how to interact with the Personal
   <img src="assets/cypress_tests.png" alt="Cypress Tests" width="45%" />
 </p>
 
+<p>
+  <img src="assets/diagram.png" alt="Database Diagram">
+</p>
+
 ## Table of Contents
 
+- [Technologies & Libraries](#technologies--libraries)
+  - [Spring Boot](#spring-boot)
+  - [OAuth2 with JWT](#oauth2-with-jwt)
+  - [Lombok](#lombok)
+  - [Database & JPA](#database--jpa)
+  - [Spring Security](#spring-security)
+  - [Spring Actuator](#spring-actuator)
 - [API Endpoints](#api-endpoints)
   - [User Authentication](#user-authentication)
   - [Book Management](#book-management)
@@ -24,6 +36,31 @@ This document provides detailed information on how to interact with the Personal
   - [Postman](#postman)
 - [Conclusion](#conclusion)
 
+## Technologies & Libraries
+
+### Spring Boot
+
+The core of the project is built using **Spring Boot**, a widely-used framework for creating stand-alone, production-grade Spring-based applications. Spring Boot simplifies the process of building production-ready applications by providing defaults for code and annotation configurations.
+
+### OAuth2 with JWT
+
+For user authentication, the project utilizes **OAuth2** with **JSON Web Tokens (JWT)**. This ensures a secure and standardized method for token-based authentication on the platform.
+
+### Lombok
+
+**Lombok** is integrated into the project to reduce boilerplate code. With Lombok, the project can automatically generate getters, setters, constructors, and other common methods, leading to cleaner and more readable code.
+
+### Database & JPA
+
+The project uses **Spring Data JPA** for seamless integration with databases. This allows for easier data access and manipulation using Java Persistence API.
+
+### Spring Security
+
+**Spring Security** is employed to protect the REST endpoints and ensure data confidentiality. With Spring Security, the project can define role-based access controls, ensuring that only authorized users can access specific functionalities.
+
+### Spring Actuator
+
+**Spring Boot Actuator** is added to the project to provide production-ready features like health checks and metrics, which can be used to monitor and manage the application.
 
 ## API Endpoints
 
