@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.personal_book_library_api.demo.daos.BookRepository;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 public class BookService {
@@ -83,6 +84,7 @@ public class BookService {
     @Transactional
     // Testing pre authorize annotation using a method and its parameters
     @PreAuthorize("@bookService.canRemove(#username, #id)")
+    @PostAuthorize("returnObject.id == #id") // returnObject is the return object from the method (ReaderBook)
     public ReaderBook removeBook(String username, Long id) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 
