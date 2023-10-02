@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.personal_book_library_api.demo.daos.BookRepository;
@@ -74,7 +76,13 @@ public class BookService {
         return readerBook;
     }
 
+    public boolean canRemove(String username, Long id) {
+        return true;
+    }
+
     @Transactional
+    // Testing pre authorize annotation using a method and its parameters
+    @PreAuthorize("@bookService.canRemove(#username, #id)")
     public ReaderBook removeBook(String username, Long id) {
         Reader reader = readerRepository.findByEmail(username).orElseThrow();
 
